@@ -1,51 +1,58 @@
-import { DeployButton } from "@/components/deploy-button";
-import { EnvVarWarning } from "@/components/env-var-warning";
-import { AuthButton } from "@/components/auth-button";
-import { Hero } from "@/components/hero";
-import { ThemeSwitcher } from "@/components/theme-switcher";
-import { ConnectSupabaseSteps } from "@/components/tutorial/connect-supabase-steps";
-import { SignUpUserSteps } from "@/components/tutorial/sign-up-user-steps";
-import { hasEnvVars } from "@/lib/utils";
-import Link from "next/link";
+"use client";
 
-export default function Home() {
+import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { routes } from "./constants/constants";
+
+export default function HomePage() {
+  const router = useRouter();
+
   return (
-    <main className="min-h-screen flex flex-col items-center">
-      <div className="flex-1 w-full flex flex-col gap-20 items-center">
-        <nav className="w-full flex justify-center border-b border-b-foreground/10 h-16">
-          <div className="w-full max-w-5xl flex justify-between items-center p-3 px-5 text-sm">
-            <div className="flex gap-5 items-center font-semibold">
-              <Link href={"/"}>Next.js Supabase Starter</Link>
-              <div className="flex items-center gap-2">
-                <DeployButton />
-              </div>
-            </div>
-            {!hasEnvVars ? <EnvVarWarning /> : <AuthButton />}
-          </div>
-        </nav>
-        <div className="flex-1 flex flex-col gap-20 max-w-5xl p-5">
-          <Hero />
-          <main className="flex-1 flex flex-col gap-6 px-4">
-            <h2 className="font-medium text-xl mb-4">Next steps</h2>
-            {hasEnvVars ? <SignUpUserSteps /> : <ConnectSupabaseSteps />}
-          </main>
-        </div>
+    <main className="relative flex flex-col items-center justify-center min-h-screen overflow-hidden bg-[#f9f9f9] text-neutral-900">
+      {/* Background Image with soft overlay */}
+      <div
+        className="absolute inset-0 bg-cover bg-center opacity-10"
+        style={{
+          backgroundImage:
+            "url('https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=1600&q=80')",
+        }}
+      />
 
-        <footer className="w-full flex items-center justify-center border-t mx-auto text-center text-xs gap-8 py-16">
-          <p>
-            Powered by{" "}
-            <a
-              href="https://supabase.com/?utm_source=create-next-app&utm_medium=template&utm_term=nextjs"
-              target="_blank"
-              className="font-bold hover:underline"
-              rel="noreferrer"
-            >
-              Supabase
-            </a>
-          </p>
-          <ThemeSwitcher />
-        </footer>
-      </div>
+      {/* Center Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1 }}
+        className="relative z-10 text-center px-6"
+      >
+        <h1 className="text-6xl sm:text-7xl font-semibold tracking-tight mb-6">
+          <span className="bg-gradient-to-r from-neutral-900 to-neutral-500 bg-clip-text text-transparent">
+            Wander Must
+          </span>
+        </h1>
+
+        <p className="text-lg text-neutral-500 mb-12 max-w-lg mx-auto font-light leading-relaxed">
+          A calm space to capture your travels, thoughts, and moments, wherever the journey takes you.
+        </p>
+
+        <Button
+          onClick={() => router.push(routes.SIGN_UP)}
+          className="px-8 py-3 rounded-full text-base font-medium bg-neutral-900 text-white hover:bg-neutral-800 transition-all"
+        >
+          Get Started
+        </Button>
+      </motion.div>
+
+      {/* Subtle floating wordmark */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.3, y: [0, -10, 0] }}
+        transition={{ duration: 6, repeat: Infinity }}
+        className="absolute bottom-10 text-sm tracking-widest text-neutral-400 uppercase"
+      >
+        wander • write • relive
+      </motion.div>
     </main>
   );
 }
